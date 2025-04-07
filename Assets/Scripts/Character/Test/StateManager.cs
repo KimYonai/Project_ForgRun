@@ -5,8 +5,14 @@ public enum PlayerState { Idle, Jump, Slide, Die }      // ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ ¿­°ÅÇ
 
 public class StateManager : MonoBehaviour
 {
-    private PlayerState state;          // ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ ¿­°ÅÇüÀ» ¹Ş¾Æ¿À±â À§ÇÑ º¯¼ö
-    private Coroutine currentState;     // ÇöÀç »óÅÂ ÄÚ·çÆ¾ º¯¼ö
+    private PlayerState state;                      // ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ ¿­°ÅÇüÀ» ¹Ş¾Æ¿À±â À§ÇÑ º¯¼ö
+    private Coroutine currentState;                 // ÇöÀç »óÅÂ ÄÚ·çÆ¾ º¯¼ö
+    [SerializeField] private Rigidbody2D rigid;     // ÇÃ·¹ÀÌ¾îÀÇ rigidbody
+    [SerializeField] private float jumpForce;       // ÇÃ·¹ÀÌ¾îÀÇ Á¡ÇÁ·Â
+
+    [SerializeField] private Transform groundCheck;
+    private float rayLength = 0.5f;
+    [SerializeField] private LayerMask groundLayer;
 
     private void Awake()
     {
@@ -62,13 +68,14 @@ public class StateManager : MonoBehaviour
     private IEnumerator Jump()
     {
         Debug.Log("<color=Yellow>Change State : Jump</color>");
+        rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
-        while (true)
+        while (!IsGrounded())
         {
-            // TODO : Jump »óÅÂÀÏ ¶§ ÁøÇàÇÒ Çàµ¿ ±â´É Ãß°¡
-            Debug.Log("Jump State");
             yield return null;
         }
+
+        ChangeState(PlayerState.Idle);
     }
 
     /// <summary>
@@ -101,5 +108,11 @@ public class StateManager : MonoBehaviour
             Debug.Log("Die State");
             yield return null;
         }
+    }
+
+    private bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, rayLength, groundLayer);
+        return hit.collider != null;
     }
 }
