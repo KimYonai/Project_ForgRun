@@ -76,13 +76,17 @@ public class StateManager : MonoBehaviour
     private IEnumerator Jump()
     {
         Debug.Log("<color=Yellow>Change State : Jump</color>");
+        // 위쪽 방향으로 jumpForce만큼 점프
         rigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
+        // IsGrounded의 반환값이 false일 때
         while (!IsGrounded())
         {
+            // null 값을 반환하여 점프 동작 실행 X
             yield return null;
         }
 
+        // Idle 상태로 전환
         ChangeState(PlayerState.Idle);
     }
 
