@@ -11,7 +11,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float jumpForce;       // 플레이어의 점프력
 
     [SerializeField] private Transform groundCheck;
-    private float rayLength = 0.5f;
+    private float rayLength = 1f;
     [SerializeField] private LayerMask groundLayer;
 
     private void Awake()
@@ -24,8 +24,14 @@ public class StateManager : MonoBehaviour
     {
         // 키 입력을 통해 플레이어의 상태 변경
         if (Input.GetKeyDown(KeyCode.Q)) { ChangeState(PlayerState.Idle); }
-        else if (Input.GetKeyDown(KeyCode.W)) { ChangeState(PlayerState.Jump); }
-        else if (Input.GetKeyDown(KeyCode.E)) { ChangeState(PlayerState.Slide); }
+        else if (Input.GetKeyDown(KeyCode.W)) 
+        { 
+            if (state != PlayerState.Jump && IsGrounded()) { ChangeState(PlayerState.Jump); }
+        }
+        else if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            if (state != PlayerState.Slide && IsGrounded()) { ChangeState(PlayerState.Slide); }
+        }
         else if (Input.GetKeyDown(KeyCode.R)) { ChangeState(PlayerState.Die); }
 
         // TODO : 각 행동 이후 진행되는 행동 및 조건에 따라 상태가 변경되도록 구현
@@ -37,6 +43,8 @@ public class StateManager : MonoBehaviour
     /// <param name="newState"></param>
     private void ChangeState(PlayerState newState)
     {
+        if (state == newState) return;
+
         // 현재 행동 중인 상태가 있을 경우 해당 행동의 코루틴 정지
         if (currentState != null) { StopCoroutine(currentState); }
         // 플레이어의 상태를 newState로 변경
