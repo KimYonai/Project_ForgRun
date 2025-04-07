@@ -19,6 +19,8 @@ public class StateManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) { ChangeState(PlayerState.Jump); }
         else if (Input.GetKeyDown(KeyCode.E)) { ChangeState(PlayerState.Slide); }
         else if (Input.GetKeyDown(KeyCode.R)) {  ChangeState(PlayerState.Die); }
+
+        UpdateState();
     }
 
     /// <summary>
