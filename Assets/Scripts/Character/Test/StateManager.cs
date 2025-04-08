@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public enum PlayerState { Idle, Jump, Slide, Die }      // 플레이어의 상태 열거형
+public enum PlayerState { Idle, Jump, Slide, Damage, Die }      // 플레이어의 상태 열거형
 
 public class StateManager : MonoBehaviour
 {
@@ -127,6 +127,22 @@ public class StateManager : MonoBehaviour
 
         // Idle 상태로 전환
         ChangeState(PlayerState.Idle);
+    }
+
+    /// <summary>
+    /// Damage 상태 행동 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Damage()
+    {
+        Debug.Log("<color=Blue>Change State : Damage</color>");
+
+        while (true)
+        {
+            // TODO : Damage 상태일 때 진행할 행동 기능 추가
+            Debug.Log("Damage State");
+            yield return null;
+        }
     }
 
     /// <summary>
