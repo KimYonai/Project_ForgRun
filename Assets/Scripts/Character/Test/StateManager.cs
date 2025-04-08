@@ -11,18 +11,29 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float jumpForce;       // 플레이어의 점프력
 
     [SerializeField] private Transform groundCheck;
-    private float rayLength = 1f;
+    private float rayLength = 0.6f;
     [SerializeField] private LayerMask groundLayer;
+
+    [SerializeField] private BoxCollider2D playerCollider;
+    private float slideHeight = 0.4f;
+    private float colliderHeight;
+    private Vector2 colliderOffset;
 
     private void Awake()
     {
+        // 콜라이더의 높이와 오프셋을 플레이어와 동일하게 동기화
+        // TODO : 추후 에셋 적용 시 플레이어의 기본 오프셋을 발 밑으로 설정 후 오프셋 관련 코드는 삭제
+        colliderHeight = playerCollider.size.y;
+        colliderOffset = playerCollider.offset;
+
         // 처음 상태를 Idle 상태로 설정
         ChangeState(PlayerState.Idle);
     }
 
     private void Update()
     {
-        // 키 입력을 통해 플레이어의 상태 변경
+        // 키 입력을 통해 플레이어의 상태 변경 (테스트용 코드)
+        // TODO : 각 상태에 맞는 키 입력 및 조건으로 조건문 수정
         if (Input.GetKeyDown(KeyCode.Q)) { ChangeState(PlayerState.Idle); }
         else if (Input.GetKeyDown(KeyCode.W)) 
         { 
@@ -33,8 +44,6 @@ public class StateManager : MonoBehaviour
             if (state != PlayerState.Slide && IsGrounded()) { ChangeState(PlayerState.Slide); }
         }
         else if (Input.GetKeyDown(KeyCode.R)) { ChangeState(PlayerState.Die); }
-
-        // TODO : 각 행동 이후 진행되는 행동 및 조건에 따라 상태가 변경되도록 구현
     }
 
     /// <summary>
@@ -49,6 +58,7 @@ public class StateManager : MonoBehaviour
         if (currentState != null) { StopCoroutine(currentState); }
         // 플레이어의 상태를 newState로 변경
         state = newState;
+
         // 현재 상태에 맞는 코루틴 실행
         currentState = StartCoroutine(state.ToString());
     }
@@ -98,12 +108,25 @@ public class StateManager : MonoBehaviour
     {
         Debug.Log("<color=Orange>Change State : Slide</color>");
 
-        while (true)
+        // 플레이어의 콜라이더 높이를 slideHeight만큼 낮추기
+        // TODO : 추후 에셋 적용 시 플레이어의 기본 오프셋을 발 밑으로 설정 후 오프셋 관련 코드는 삭제
+        playerCollider.size = new Vector2(playerCollider.size.x, slideHeight);
+        playerCollider.offset = new Vector2(playerCollider.offset.x, slideHeight / 2);
+
+        while (Input.GetKey(KeyCode.E))
         {
             // TODO : Slide 상태일 때 진행할 행동 기능 추가
             Debug.Log("Slide State");
             yield return null;
         }
+
+        // 플레이어의 콜라이더 높이를 원상복구
+        // TODO : 추후 에셋 적용 시 플레이어의 기본 오프셋을 발 밑으로 설정 후 오프셋 관련 코드는 삭제
+        playerCollider.size = new Vector2(playerCollider.size.x, colliderHeight);
+        playerCollider.offset = colliderOffset;
+
+        // Idle 상태로 전환
+        ChangeState(PlayerState.Idle);
     }
 
     /// <summary>

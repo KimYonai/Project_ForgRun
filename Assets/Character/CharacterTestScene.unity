@@ -382,6 +382,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  playerCollider: {fileID: 569472213}
 --- !u!50 &569472212
 Rigidbody2D:
   serializedVersion: 4
