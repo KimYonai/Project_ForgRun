@@ -356,6 +356,8 @@ GameObject:
   - component: {fileID: 569472214}
   - component: {fileID: 569472213}
   - component: {fileID: 569472212}
+  - component: {fileID: 569472218}
+  - component: {fileID: 569472217}
   - component: {fileID: 569472216}
   m_Layer: 0
   m_Name: Player
@@ -516,12 +518,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 569472212}
-  jumpForce: 5
   groundCheck: {fileID: 569472215}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   playerCollider: {fileID: 569472213}
+--- !u!114 &569472217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569472210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2279c0c38dfaf0e4f87fa93ec66af7d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &569472218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569472210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a0d45beaa259b48b06efdd4a7b710b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 3
+  jumpForce: 5
 --- !u!1 &905043742
 GameObject:
   m_ObjectHideFlags: 0
