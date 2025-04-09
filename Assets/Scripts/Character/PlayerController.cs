@@ -7,6 +7,7 @@ public enum PlayerState { Idle, Jump, Slide, Damage, Die }      // 플레이어의 상
 
 public class PlayerController : MonoBehaviour
 {
+    // TODO : 모든 상태에 각 상태에 맞는 애니메이션 출력
     [SerializeField] private PlayerModel model;
 
     private PlayerState state;                              // 플레이어의 상태 열거형을 받아오기 위한 변수
@@ -184,14 +185,20 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Die()
     {
+        float invincibleTime = 1f;  // 피격 시 무적 시간
+        float timer = 0f;           // 무적 시간 타이머
+
         Debug.Log("<color=Red>Change State : Die</color>");
 
-        while (true)
+        // TODO : 사망 애니메이션을 출력
+
+        while (timer < invincibleTime)
         {
-            // TODO : Die 상태일 때 진행할 행동 기능 추가
-            Debug.Log("Die State");
+            timer += Time.deltaTime;
             yield return null;
         }
+
+        gameObject.SetActive(false);
     }
 
     /// <summary>
