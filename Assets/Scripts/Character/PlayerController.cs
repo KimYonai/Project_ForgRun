@@ -1,9 +1,10 @@
-/*using System.Collections;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-//public enum PlayerState { Idle, Jump, Slide, Damage, Die }      // 플레이어의 상태 열거형
+public enum PlayerState { Idle, Jump, Slide, Damage, Die }      // 플레이어의 상태 열거형
 
-public class StateManager : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private PlayerState state;                      // 플레이어의 상태 열거형을 받아오기 위한 변수
     private Coroutine currentState;                 // 현재 상태 코루틴 변수
@@ -35,11 +36,11 @@ public class StateManager : MonoBehaviour
         // 키 입력을 통해 플레이어의 상태 변경 (테스트용 코드)
         // TODO : 각 상태에 맞는 키 입력 및 조건으로 조건문 수정
         if (Input.GetKeyDown(KeyCode.Q)) { ChangeState(PlayerState.Idle); }
-        else if (Input.GetKeyDown(KeyCode.W)) 
-        { 
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
             if (state != PlayerState.Jump && IsGrounded()) { ChangeState(PlayerState.Jump); }
         }
-        else if (Input.GetKeyDown(KeyCode.E)) 
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             if (state != PlayerState.Slide && IsGrounded()) { ChangeState(PlayerState.Slide); }
         }
@@ -167,4 +168,3 @@ public class StateManager : MonoBehaviour
         return hit.collider != null;
     }
 }
-*/
