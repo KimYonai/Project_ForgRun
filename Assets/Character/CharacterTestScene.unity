@@ -517,6 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d0e4a798595cc489b1173f874858a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 569472218}
   rigid: {fileID: 569472212}
   groundCheck: {fileID: 569472215}
   groundLayer:
