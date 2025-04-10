@@ -27,6 +27,14 @@ public class PlayerController : MonoBehaviour
 
     private bool isInvincible = false;                      // 플레이어가 무적 상태인지 체크하는 변수
 
+    [SerializeField] private Animator animator;
+    private static int idleHash = Animator.StringToHash("Idle");
+    private static int jumpHash = Animator.StringToHash("Jump");
+    private static int fallHash = Animator.StringToHash("Fall");
+    private static int slideHash = Animator.StringToHash("Slide");
+    private static int damageHash = Animator.StringToHash("Damage");
+    private static int dieHash = Animator.StringToHash("Die");
+
     private void Awake()
     {
         // 콜라이더의 높이와 오프셋을 플레이어와 동일하게 동기화
@@ -83,6 +91,7 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             // TODO : Idle 상태일 때 진행할 행동 기능 추가
+            animator.Play(idleHash);
             Debug.Log("Idle State");
             yield return null;
         }
@@ -97,6 +106,15 @@ public class PlayerController : MonoBehaviour
         Debug.Log("<color=Yellow>Change State : Jump</color>");
         // 위쪽 방향으로 jumpForce만큼 점프
         rigid.AddForce(Vector2.up * model.JumpForce, ForceMode2D.Impulse);
+
+        if (rigid.velocity.y > 0.01f)
+        {
+            animator.Play(jumpHash);
+        }
+        else if (rigid.velocity.y < -0.01f)
+        {
+            animator.Play(fallHash);
+        }
 
         // IsGrounded의 반환값이 false일 때
         while (!IsGrounded())
@@ -121,6 +139,7 @@ public class PlayerController : MonoBehaviour
         // TODO : 추후 에셋 적용 시 플레이어의 기본 오프셋을 발 밑으로 설정 후 오프셋 관련 코드는 삭제
         playerCollider.size = new Vector2(playerCollider.size.x, slideHeight);
         playerCollider.offset = new Vector2(playerCollider.offset.x, slideHeight / 2);
+        animator.Play(slideHash);
 
         while (Input.GetKey(KeyCode.E))
         {
@@ -159,6 +178,7 @@ public class PlayerController : MonoBehaviour
         // 피격 시 무적 상태로 변경하고 플레이어의 체력을 1 감소
         isInvincible = true;
         model.HP -= 1;
+        animator.Play(damageHash);
 
         // 플레이어의 체력이 0 이하가 되면 Die 상태로 변경
         if (model.HP <= 0)
@@ -190,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("<color=Red>Change State : Die</color>");
 
-        // TODO : 사망 애니메이션을 출력
+        animator.Play(dieHash);
 
         while (timer < invincibleTime)
         {
