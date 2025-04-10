@@ -7,26 +7,26 @@ public enum PlayerState { Idle, Jump, Slide, Damage, Die }      // 플레이어의 상
 
 public class PlayerController : MonoBehaviour
 {
-    // TODO : 모든 상태에 각 상태에 맞는 애니메이션 출력
     [SerializeField] private PlayerModel model;
 
     private PlayerState state;                              // 플레이어의 상태 열거형을 받아오기 위한 변수
     private Coroutine currentState;                         // 현재 상태 코루틴 변수
     [SerializeField] private Rigidbody2D rigid;             // 플레이어의 rigidbody
+    [SerializeField] private BoxCollider2D playerCollider;  // 플레이어의 콜라이더
+    private bool isInvincible = false;                      // 플레이어가 무적 상태인지 체크하는 변수
 
+    [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;         // 땅에 닿아있는 위치 체크용 Transform 변수
     private float rayLength = 0.6f;                         // 레이캐스트 광선 길이
     [SerializeField] private LayerMask groundLayer;         // 땅을 구분짓기 위해 Ground 레이어 체크용 변수
 
-    [SerializeField] private BoxCollider2D playerCollider;  // 플레이어의 콜라이더
+    [Header("Slide")]
     private float slideHeight = 0.4f;                       // 슬라이드 시 높이
     private float colliderHeight;                           // 콜라이더의 높이
-
-    // TODO : 추후 에셋 적용 시 플레이어의 기본 오프셋을 발 밑으로 설정 후 오프셋 관련 코드는 삭제
     private Vector2 colliderOffset;                         // 콜라이더의 오프셋
 
-    private bool isInvincible = false;                      // 플레이어가 무적 상태인지 체크하는 변수
-
+    // 플레이어 상태 별 애니메이션
+    [Header("Animation")]
     [SerializeField] private Animator animator;
     private static int idleHash = Animator.StringToHash("Idle");
     private static int jumpHash = Animator.StringToHash("Jump");
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // 키 입력을 통해 플레이어의 상태 변경 (테스트용 코드)
-        // TODO : 각 상태에 맞는 키 입력 및 조건으로 조건문 수정
+        // TODO : PlayerView 구현 시 각 상태에 맞는 키 입력 및 조건으로 조건문 수정
         if (Input.GetKeyDown(KeyCode.Q)) { ChangeState(PlayerState.Idle); }
         else if (Input.GetKeyDown(KeyCode.W))
         {
