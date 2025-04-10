@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
     private static int fallHash = Animator.StringToHash("Fall");
     private static int slideHash = Animator.StringToHash("Slide");
     private static int damageHash = Animator.StringToHash("Damage");
-    private static int dieHash = Animator.StringToHash("Die");
 
     private void Awake()
     {
@@ -205,20 +204,9 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Die()
     {
-        float invincibleTime = 1f;  // 피격 시 무적 시간
-        float timer = 0f;           // 무적 시간 타이머
-
         Debug.Log("<color=Red>Change State : Die</color>");
-
-        animator.Play(dieHash);
-
-        while (timer < invincibleTime)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
         gameObject.SetActive(false);
+        yield return null;
     }
 
     /// <summary>

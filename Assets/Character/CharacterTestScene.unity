@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 301469956}
   - component: {fileID: 301469955}
   - component: {fileID: 301469954}
+  - component: {fileID: 301469961}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -163,6 +164,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   playerCollider: {fileID: 301469957}
+  animator: {fileID: 301469961}
 --- !u!114 &301469955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +330,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &301469961
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301469953}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e9da19ec68ddaec41aa00c432939f3c7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &323775041
 GameObject:
   m_ObjectHideFlags: 0
