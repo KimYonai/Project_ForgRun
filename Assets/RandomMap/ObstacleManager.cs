@@ -50,6 +50,10 @@ public class ObstacleManager : MonoBehaviour
         RemoveObstacles();
     }
 
+    /// <summary>
+    /// 장애물 생성 함수
+    /// </summary>
+    /// <param name="x"></param>
     private void SpawnObstacle(float x)
     {
         // 장애물 풀링 큐가 비었을 때 예외처리
@@ -67,6 +71,9 @@ public class ObstacleManager : MonoBehaviour
         activeObstacles.Add(obj);                                   // 생성한 오브젝트를 활성화된 오브젝트 체크를 위해 리스트에 추가
     }
 
+    /// <summary>
+    /// 장애물 제거 함수
+    /// </summary>
     private void RemoveObstacles()
     {
         // 메인 카메라의 왼쪽 바깥 위치를 화면의 비율에 맞게 설정
