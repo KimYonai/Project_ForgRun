@@ -72,6 +72,13 @@ public class ObstacleManager : MonoBehaviour
         obj.SetActive(true);                                        // 생성할 오브젝트를 활성화 처리
 
         activeObstacles.Add(obj);                                   // 생성한 오브젝트를 활성화된 오브젝트 체크를 위해 리스트에 추가
+
+        ParallaxObject po = obj.GetComponent<ParallaxObject>();
+
+        if (po != null)
+        {
+            GameObject.FindObjectOfType<ParallaxManager>().Register(po);
+        }
     }
 
     /// <summary>
