@@ -17,14 +17,14 @@ public class ParallaxObject : MonoBehaviour
 
     public void Move(float scrollSpeed)
     {
-        transform.Translate(Vector3.left * speed * scrollSpeed *  Time.deltaTime);
+        transform.Translate(Vector3.left * speed * scrollSpeed * Time.deltaTime);  // 왼쪽으로 이동
 
         if (isLooping)
         {
             if (transform.position.x <= startPos.x - tileWidth)
             {
-                transform.position += Vector3.right * tileWidth * 2f;
+                transform.position += Vector3.right * tileWidth * 2f;  // 반복되는 스크롤링 효과
             }
-        }  
+        }
     }
 }

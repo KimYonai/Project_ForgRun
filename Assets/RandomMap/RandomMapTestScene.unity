@@ -245,9 +245,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacles:
   - {fileID: 3738469201508072277, guid: 9f1c75e671ecadb4c9d2044e56f39b2c, type: 3}
-  poolSize: 5
-  spawnOffset: 0
-  distance: 0
+  poolSize: 10
+  spawnOffset: 5
+  distance: 3
   lastSpawnX: 0
 --- !u!4 &351719093
 Transform:

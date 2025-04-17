@@ -4,8 +4,24 @@ using UnityEngine;
 
 public class ParallaxManager : MonoBehaviour
 {
+    public static ParallaxManager Instance { get; private set; }
+
     [SerializeField] private float scrollSpeed;
     private List<ParallaxObject> objects = new List<ParallaxObject>();
+
+    private void Awake()
+    {
+        // ½Ì±ÛÅæ ÆÐÅÏ ±¸Çö
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     private void Start()
     {
