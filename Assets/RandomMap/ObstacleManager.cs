@@ -56,16 +56,19 @@ public class ObstacleManager : MonoBehaviour
     /// <param name="x"></param>
     private void SpawnObstacle(float x)
     {
+        // 랜덤 확률로 생성할지를 결정 (확률 : 50%)
+        if (Random.value > 0.5f) return;
+
         // 장애물 풀링 큐가 비었을 때 예외처리
         if (obstacleQueue.Count == 0) return;
 
-        GameObject obj = obstacleQueue.Dequeue();                   // 생성할 오브젝트를 장애물 풀링 큐에서 내보내기
+        GameObject obj = obstacleQueue.Dequeue();                    // 생성할 오브젝트를 장애물 풀링 큐에서 내보내기
 
-        // 테스트용 코드 (추후 삭제 후 값 재설정 필요)
-        float randomX = Random.Range(-10f, 10f);
-        float randomY = Random.Range(-3f, 3f);
+        float randomY_01 = -3f;                                     // 일정 y좌표에 생성
+        float randomY_02 = 0f;                                      // 일정 y좌표에 생성
+        float y = (Random.value < 0.5f) ? randomY_01 : randomY_02;
 
-        obj.transform.position = new Vector2(randomX, randomY);     // 생성할 오브젝트의 위치 설정 (필요 시 y 좌표값 수정)
+        obj.transform.position = new Vector2(x, y);                 // 생성할 오브젝트의 위치 설정 (필요 시 y 좌표값 수정)
         obj.SetActive(true);                                        // 생성할 오브젝트를 활성화 처리
 
         activeObstacles.Add(obj);                                   // 생성한 오브젝트를 활성화된 오브젝트 체크를 위해 리스트에 추가
@@ -89,7 +92,9 @@ public class ObstacleManager : MonoBehaviour
             if (obj.transform.position.x < cameraLeft - 1f)
             {
                 activeObstacles.RemoveAt(i);    // 활성화된 오브젝트 리스트에서 오브젝트 삭제
-                Destroy(obj);                   // 활성화된 오브젝트를 파괴
+
+                obj.SetActive(false);           // 오브젝트를 비활성화 처리
+                obstacleQueue.Enqueue(obj);     // 해당 오브젝트를 다시 큐로 반환
             }
         }
     }

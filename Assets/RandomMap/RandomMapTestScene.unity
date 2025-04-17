@@ -244,8 +244,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacles:
-  - {fileID: 642278059781497792, guid: 3c4763bc29559894a8d18702c0feb487, type: 3}
-  - {fileID: 2893812416054991284, guid: ee16dd62eafad1b4fad515daf860338f, type: 3}
   - {fileID: 3738469201508072277, guid: 9f1c75e671ecadb4c9d2044e56f39b2c, type: 3}
   poolSize: 5
   spawnOffset: 0
