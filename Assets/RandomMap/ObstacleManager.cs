@@ -35,15 +35,11 @@ public class ObstacleManager : MonoBehaviour
         // 메인 카메라의 오른쪽 바깥 위치를 화면의 비율에 맞게 설정
         float cameraRight = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
 
-        int maxCount = 20;
-        int count = 0;
-
         // 마지막 장애물 생성 스폰 위치 X 좌표가 카메라 오른쪽 바깥 + spawnOffset 위치보다 작을 때 반복
-        while (lastSpawnX < cameraRight + spawnOffset && count < maxCount)
+        while (lastSpawnX < cameraRight + spawnOffset)
         {
             SpawnObstacle(lastSpawnX);  // lastSpawnX 위치에 장애물 생성
             lastSpawnX += distance;     // lastSpawnX 값을 distance만큼 추가
-            count++;
         }
 
         // 장애물 제거
