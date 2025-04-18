@@ -134,5 +134,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  isLooping: 1
+  isLooping: 0
   tileWidth: 10

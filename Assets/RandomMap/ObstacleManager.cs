@@ -5,72 +5,109 @@ using UnityEngine;
 public class ObstacleManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] obstacles;                    // 장애물 프리팹들
-    [SerializeField] int poolSize = 5;                                  // 장애물 프리팹 전체 개수
+    [SerializeField] int poolSize = 5;                                  // 장애물 풀링 수
 
     private Queue<GameObject> obstacleQueue = new Queue<GameObject>();  // 장애물 풀링 큐
-    private List<GameObject> activeObstacles = new List<GameObject>();  // 활성화된 장애물 체크용 리스트
+    private List<GameObject> activeObstacles = new List<GameObject>();  // 활성화된 장애물 리스트
 
-    [SerializeField] private float spawnOffset;                         // 카메라 바깥쪽에 장애물을 얼마나 더 생성할지 결정하는 값
+    [SerializeField] private float spawnOffset;                         // 카메라 오른쪽 외부에서 얼마나 떨어진 위치에 생성할지 결정
     [SerializeField] private float distance;                            // 장애물 생성 간격
-    [SerializeField] private float lastSpawnX;                          // 마지막으로 장애물을 생성한 위치          
+    [SerializeField] private float minSpacing;                          // 장애물 간 최소 거리
+
+    [SerializeField] private float minSpawnX;                           // 장애물 생성 가능한 최소 X 위치
+    [SerializeField] private float maxSpawnX;                           // 장애물 생성 가능한 최대 X 위치
+
+    private float nextSpawnX;                                           // 다음 장애물을 생성할 X 위치
 
     private void Start()
     {
-        // obstacles에 있는 프리팹 중 하나를 랜덤하게 큐에 추가
+        // 장애물 풀 초기화
         for (int i = 0; i < poolSize; i++)
         {
-            // obstacles 배열 내 랜덤한 프리팹을 지정
-            GameObject gameObject = obstacles[Random.Range(0, obstacles.Length)];
-            // 랜덤으로 지정한 프리팹을 생성
-            GameObject obj = Instantiate(gameObject);
-            // 생성한 프리팹을 비활성화 처리
-            obj.SetActive(false);
-            // 생성한 프리팹을 오브젝트 풀링 큐에 추가
-            obstacleQueue.Enqueue(obj);
+            GameObject prefab = obstacles[Random.Range(0, obstacles.Length)]; // 랜덤 프리팹 선택
+            GameObject obj = Instantiate(prefab);                             // 인스턴스 생성
+            obj.SetActive(false);                                             // 비활성화
+            obstacleQueue.Enqueue(obj);                                       // 큐에 저장
         }
+
+        //// 초기 생성 위치 설정
+        //float cameraRight = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
+        nextSpawnX = Mathf.Max(minSpawnX, Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect + spawnOffset);  // 시작 시점 기준으로 설정
     }
 
     private void Update()
     {
-        // 메인 카메라의 오른쪽 바깥 위치를 화면의 비율에 맞게 설정
+        // 메인 카메라의 오른쪽 경계 계산
         float cameraRight = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
+        Debug.Log("cameraRight: " + cameraRight + " nextSpawnX: " + nextSpawnX);
 
-        // 마지막 장애물 생성 스폰 위치 X 좌표가 카메라 오른쪽 바깥 + spawnOffset 위치보다 작을 때 반복
-        while (lastSpawnX < cameraRight + spawnOffset)
+        float spawnX = cameraRight + spawnOffset;
+
+        // nextSpawnX가 현재 카메라 오른쪽 + offset보다 왼쪽에 있다면 반복해서 생성
+        for (int i = 0; i < 1; i++)
         {
-            SpawnObstacle(lastSpawnX);  // lastSpawnX 위치에 장애물 생성
-            lastSpawnX += distance;     // lastSpawnX 값을 distance만큼 추가
+            // nextSpawnX가 특정 X 범위 내에 있을 때만 생성
+            if (nextSpawnX >= minSpawnX && nextSpawnX <= maxSpawnX)
+            {
+                Debug.Log("SpawnObstacle 호출됨: x = " + nextSpawnX);
+                SpawnObstacle(nextSpawnX);
+            }
+
+            nextSpawnX += distance; // 다음 생성 위치 설정
+
+            // nextSpawnX 값이 maxSpawnX를 넘으면 리셋
+            if (nextSpawnX > maxSpawnX)
+            {
+                nextSpawnX = minSpawnX; // 리셋
+            }
         }
 
-        // 장애물 제거
+        // 장애물 제거 처리
         RemoveObstacles();
     }
 
     /// <summary>
-    /// 장애물 생성 함수
+    /// 장애물을 카메라 오른쪽 외부에 생성
     /// </summary>
-    /// <param name="x"></param>
+    /// <param name="x">생성할 X 위치</param>
     private void SpawnObstacle(float x)
     {
-        // 랜덤 확률로 생성할지를 결정 (확률 : 50%)
-        if (Random.value > 0.5f) return;
+        // 50% 확률로 생성하지 않음
+        if (Random.value > 0.5f)
+        {
+            Debug.Log("확률로 인해 생성되지 않음");
+            return;
+        }
 
-        // 장애물 풀링 큐가 비었을 때 예외처리
-        if (obstacleQueue.Count == 0) return;
+        // 풀에 사용 가능한 오브젝트가 없으면 생성하지 않음
+        if (obstacleQueue.Count == 0)
+        {
+            Debug.Log("큐가 비어있음");
+            return;
+        }
 
-        GameObject obj = obstacleQueue.Dequeue();                    // 생성할 오브젝트를 장애물 풀링 큐에서 내보내기
+        // 기존 활성화된 장애물들과의 간격 확인
+        foreach (GameObject obj in activeObstacles)
+        {
+            if (Mathf.Abs(obj.transform.position.x - x) < minSpacing)
+            {
+                // 너무 가까우면 생성하지 않음
+                return;
+            }
+        }
 
-        float randomY_01 = -3f;                                     // 일정 y좌표에 생성
-        float randomY_02 = 0f;                                      // 일정 y좌표에 생성
-        float y = (Random.value < 0.5f) ? randomY_01 : randomY_02;
+        GameObject objToSpawn = obstacleQueue.Dequeue(); // 풀에서 꺼냄
 
-        obj.transform.position = new Vector2(x, y);                 // 생성할 오브젝트의 위치 설정 (필요 시 y 좌표값 수정)
-        obj.SetActive(true);                                        // 생성할 오브젝트를 활성화 처리
+        // 장애물의 Y 위치 랜덤 결정 (예: -3 또는 2)
+        float y = (Random.value < 0.5f) ? -3f : 2f;
 
-        activeObstacles.Add(obj);                                   // 생성한 오브젝트를 활성화된 오브젝트 체크를 위해 리스트에 추가
+        objToSpawn.transform.position = new Vector2(x, y); // 위치 설정
+        objToSpawn.SetActive(true);                        // 활성화
+        activeObstacles.Add(objToSpawn);                   // 리스트에 추가
+        Debug.Log($"장애물 생성 : {objToSpawn.name} 오브젝트가 {objToSpawn.transform.position} 위치에 생성");
 
-        ParallaxObject po = obj.GetComponent<ParallaxObject>();
-
+        // ParallaxObject 등록
+        ParallaxObject po = objToSpawn.GetComponent<ParallaxObject>();
         if (po != null)
         {
             GameObject.FindObjectOfType<ParallaxManager>().Register(po);
@@ -78,26 +115,23 @@ public class ObstacleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 장애물 제거 함수
+    /// 카메라 왼쪽으로 벗어난 장애물을 비활성화하고 풀로 반환
     /// </summary>
     private void RemoveObstacles()
     {
-        // 메인 카메라의 왼쪽 바깥 위치를 화면의 비율에 맞게 설정
         float cameraLeft = Camera.main.transform.position.x - Camera.main.orthographicSize * Camera.main.aspect;
 
-        // 카메라 왼쪽으로 나가 시야에 보이지 않은 장애물 처리에 대한 반복문
         for (int i = activeObstacles.Count - 1; i >= 0; i--)
         {
-            // 활성화된 오브젝트 지정
             GameObject obj = activeObstacles[i];
+            Debug.Log($"활성화된 오브젝트 : {obj.name} / {obj.transform.position.x}");
 
-            // 활성화된 오브젝트의 위치가 카메라 왼쪽 바깥 - 1의 좌표 값일 경우
-            if (obj.transform.position.x < cameraLeft - 1f)
+            // 왼쪽 화면 바깥으로 벗어난 경우 처리
+            if (obj.transform.position.x < cameraLeft)
             {
-                activeObstacles.RemoveAt(i);    // 활성화된 오브젝트 리스트에서 오브젝트 삭제
-
-                obj.SetActive(false);           // 오브젝트를 비활성화 처리
-                obstacleQueue.Enqueue(obj);     // 해당 오브젝트를 다시 큐로 반환
+                activeObstacles.RemoveAt(i);  // 리스트에서 제거
+                obj.SetActive(false);         // 비활성화
+                obstacleQueue.Enqueue(obj);   // 다시 풀에 넣기
             }
         }
     }
