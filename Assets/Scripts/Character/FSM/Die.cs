@@ -10,7 +10,16 @@ public class Die : IPlayerState
     public void Enter(PlayerController player)
     {
         this.player = player;
+        Debug.Log($"Player Position: {player.transform.position}"); // 플레이어 위치 출력
         Debug.Log("<color=Red>Enter Die</color>");
+
+        // SpriteRenderer가 있으면 상태도 출력
+        var renderer = player.GetComponent<SpriteRenderer>();
+        if (renderer != null)
+        {
+            Debug.Log($"Renderer enabled: {renderer.enabled}"); // Renderer 상태 출력
+        }
+
         player.gameObject.SetActive(false);
     }
 

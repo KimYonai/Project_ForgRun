@@ -47,6 +47,10 @@ public class PlayerController : MonoBehaviour
     /// <param name="newState">새로운 상태 클래스</param>
     public void ChangeState(IPlayerState newState)
     {
+        // 동일 상태로의 중복 전환 방지
+        if (currentState != null && currentState.GetType() == newState.GetType()) return;
+
+        Debug.Log($"<color=white>State Change: {currentState?.GetType().Name} → {newState.GetType().Name}</color>");
         currentState?.Exit();
         currentState = newState;
         currentState.Enter(this);
@@ -57,17 +61,35 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleInput()
     {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("ddddddd");
+            if (IsGrounded()) { ChangeState(new Jump()); }
+        }
+        else if (model.HP <= 0 || Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("Player HP <= 0. Transitioning to Die state.");
+            ChangeState(new Die());
+        }
+
+        // 에디터 or PC 테스트용 키 입력
+        #if Unity_Editor || Unity_StandLone
         if (Input.GetKeyDown(KeyCode.Q)) { ChangeState(new Idle()); }
         else if (Input.GetKeyDown(KeyCode.W))
         {
             if (IsGrounded()) { ChangeState(new Jump()); }
         }
-        //else if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    if (IsGrounded()) { ChangeState(new Slide()); }
-        //}
         else if (Input.GetKeyDown(KeyCode.D)) { ChangeState(new Damage()); }
         else if (Input.GetKeyDown(KeyCode.R)) { ChangeState(new Die()); }
+        #endif
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            ChangeState(new Damage());
+        }
     }
 
     /// <summary>

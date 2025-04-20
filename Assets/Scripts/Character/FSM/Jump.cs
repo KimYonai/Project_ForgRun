@@ -9,11 +9,16 @@ public class Jump : IPlayerState
     private Rigidbody2D rigid;
     private Animator animator;
 
+    private float coyoteTime = 0.1f; // 안전 여유 시간
+    private float elapsedTime;
+
     public void Enter(PlayerController player)
     {
         this.player = player;
         rigid = player.Rigid;
         animator = player.Animator;
+        elapsedTime = 0f;
+        Debug.Log($"Player Position Before Jump: {player.transform.position}"); // 점프 전 위치 출력
 
         Debug.Log("<color=Yellow>Enter Jump</color>");
         rigid.AddForce(Vector2.up * player.Model.JumpForce, ForceMode2D.Impulse);
@@ -21,7 +26,8 @@ public class Jump : IPlayerState
 
     public void Update()
     {
-        // 점프 시 상승 중/하강 중 애니메이션 분기
+        elapsedTime += Time.deltaTime;
+
         if (rigid.velocity.y > 0.01f)
         {
             animator.Play(PlayerController.JumpHash);
@@ -31,8 +37,8 @@ public class Jump : IPlayerState
             animator.Play(PlayerController.FallHash);
         }
 
-        // 땅에 닿았을 경우 Idle 상태로 전환
-        if (player.IsGrounded())
+        // 일정 시간 이후에만 착지 체크
+        if (elapsedTime > coyoteTime && player.IsGrounded())
         {
             player.ChangeState(new Idle());
         }
