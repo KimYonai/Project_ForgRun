@@ -90,6 +90,11 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(new Damage());
         }
+        else if (collision.CompareTag("Coin"))
+        {
+            collision.gameObject.SetActive(false);
+            model.CoinCount++;
+        }
     }
 
     /// <summary>

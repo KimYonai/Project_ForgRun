@@ -8,5 +8,6 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float jumpForce;
     public float JumpForce { get { return jumpForce; } set { jumpForce = value; } }
 
-
+    [SerializeField] private int coinCount;
+    public int CoinCount { get { return coinCount; } set { coinCount = value; } }
 }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6526622210113589304}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -176,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 3
   jumpForce: 5
+  coinCount: 0
 --- !u!114 &4153138650986587388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,11 +204,11 @@ MonoBehaviour:
   model: {fileID: 435481156363870466}
   rigid: {fileID: 1134100460317813087}
   playerCollider: {fileID: 7477726239361483339}
+  animator: {fileID: 6526622210113589304}
   groundCheck: {fileID: 8576420682372636065}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  animator: {fileID: 6526622210113589304}
 --- !u!95 &6526622210113589304
 Animator:
   serializedVersion: 5

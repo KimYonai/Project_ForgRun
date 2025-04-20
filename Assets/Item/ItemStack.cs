@@ -3,9 +3,8 @@ using UnityEngine;
 public class ItemStack : MonoBehaviour
 {
     public Item item;
-    private float offset = 0.1f;
 
-    [SerializeField] float speed;
+    [SerializeField] private float speed;
 
     private void Update()
     {
