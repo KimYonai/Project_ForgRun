@@ -36,8 +36,13 @@ TagManager:
   - 
   - 
   - 
-  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Obstacle
+    uniqueID: 2103741575
+    locked: 0
+  - name: 
+    uniqueID: 1830209679
     locked: 0
