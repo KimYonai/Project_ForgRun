@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 플레이어의 Damage 상태 클래스
 /// </summary>
-public class DamageState : IPlayerState
+public class Damage : IPlayerState
 {
     private PlayerController player;
     private float invincibleTime = 1f;   // 무적 시간
