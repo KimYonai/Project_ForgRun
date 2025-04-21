@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began || Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("ddddddd");
             if (IsGrounded()) { ChangeState(new Jump()); }
         }
         else if (model.HP <= 0 || Input.GetKeyDown(KeyCode.F))

@@ -24,6 +24,11 @@ public class PlayerView : MonoBehaviour
         currentText.text = $"Coin : {model.CoinCount}";
     }
 
+    public void OnClickLobbyButton()
+    {
+        SceneManager.LoadScene("LobbyScene");
+    }
+
     public void UpdateBestCoinUI()
     {
         int bestCoin = GameDataManager.Instance.GetBestCoin();
@@ -35,11 +40,6 @@ public class PlayerView : MonoBehaviour
         GameDataManager.Instance.TryUpdateBestCoin(model.CoinCount);
         UpdateBestCoinUI();
         gameOverText.gameObject.SetActive(true);
-
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && gameOverText.gameObject.activeSelf == true)
-        {
-            SceneManager.LoadScene("LobbyScene");
-        }
     }
 
 }
