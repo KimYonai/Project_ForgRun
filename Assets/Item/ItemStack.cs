@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class ItemStack : MonoBehaviour
 {
-    public Item item;
-
     [SerializeField] private float speed;
 
     private void Update()
     {
-        transform.Translate(Vector2.left * speed * 3 * Time.deltaTime);
+        transform.Translate(Vector2.left * speed * 3f * Time.deltaTime);
 
         if (IsOutOfView())
         {
             gameObject.SetActive(false);
+
+            // 아이템 스포너에 알림
+            if (ItemSpawner.Instance != null)
+                ItemSpawner.Instance.OnItemDisabled();
         }
     }
 
