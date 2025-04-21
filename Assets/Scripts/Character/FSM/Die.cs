@@ -6,10 +6,12 @@ using UnityEngine;
 public class Die : IPlayerState
 {
     private PlayerController player;
+    private PlayerView view;
 
     public void Enter(PlayerController player)
     {
         this.player = player;
+        view = player.gameObject.GetComponent<PlayerView>();
         Debug.Log($"Player Position: {player.transform.position}"); // 플레이어 위치 출력
         Debug.Log("<color=Red>Enter Die</color>");
 
@@ -21,6 +23,7 @@ public class Die : IPlayerState
         }
 
         player.gameObject.SetActive(false);
+        view.OnGameEnd();
     }
 
     public void Update() { }
