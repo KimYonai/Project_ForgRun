@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] PlayerModel model;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] TMP_Text currentText;
+    [SerializeField] TMP_Text highScoreText;
+
+    private void Update()
     {
-        
+        currentText.text = $"Coin : {model.CoinCount}";
     }
 }
