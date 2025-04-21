@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ParallaxManager : MonoBehaviour
 {
@@ -23,17 +23,26 @@ public class ParallaxManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        ParallaxObject[] objs = FindObjectsOfType<ParallaxObject>();
-        objects.AddRange(objs);
-    }
-
     private void Update()
     {
-        foreach (ParallaxObject obj in objects)
+        // 현재 씬이 게임 씬이 아닐 경우 패럴랙스 중지
+        if (SceneManager.GetActiveScene().name != "GameScene")
+            return;
+
+        // 파괴된 오브젝트를 제거하면서 Move 호출
+        for (int i = objects.Count - 1; i >= 0; i--)
         {
-            obj.Move(scrollSpeed);
+            var obj = objects[i];
+            if (obj == null)
+            {
+                objects.RemoveAt(i); // 파괴된 참조 제거
+                continue;
+            }
+
+            if (obj.gameObject.activeInHierarchy)
+            {
+                obj.Move(scrollSpeed);
+            }
         }
     }
 
@@ -47,9 +56,6 @@ public class ParallaxManager : MonoBehaviour
 
     public void Unregister(ParallaxObject obj)
     {
-        if (objects.Contains(obj))
-        {
-            objects.Remove(obj);
-        }
+        objects.Remove(obj);
     }
 }

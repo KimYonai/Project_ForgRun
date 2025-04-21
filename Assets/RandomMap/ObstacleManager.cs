@@ -39,7 +39,7 @@ public class ObstacleManager : MonoBehaviour
     {
         // 메인 카메라의 오른쪽 경계 계산
         float cameraRight = Camera.main.transform.position.x + Camera.main.orthographicSize * Camera.main.aspect;
-        Debug.Log("cameraRight: " + cameraRight + " nextSpawnX: " + nextSpawnX);
+        //Debug.Log("cameraRight: " + cameraRight + " nextSpawnX: " + nextSpawnX);
 
         float spawnX = cameraRight + spawnOffset;
 
@@ -49,7 +49,7 @@ public class ObstacleManager : MonoBehaviour
             // nextSpawnX가 특정 X 범위 내에 있을 때만 생성
             if (nextSpawnX >= minSpawnX && nextSpawnX <= maxSpawnX)
             {
-                Debug.Log("SpawnObstacle 호출됨: x = " + nextSpawnX);
+                //Debug.Log("SpawnObstacle 호출됨: x = " + nextSpawnX);
                 SpawnObstacle(nextSpawnX);
             }
 
@@ -75,14 +75,14 @@ public class ObstacleManager : MonoBehaviour
         // 50% 확률로 생성하지 않음
         if (Random.value > 0.5f)
         {
-            Debug.Log("확률로 인해 생성되지 않음");
+            //Debug.Log("확률로 인해 생성되지 않음");
             return;
         }
 
         // 풀에 사용 가능한 오브젝트가 없으면 생성하지 않음
         if (obstacleQueue.Count == 0)
         {
-            Debug.Log("큐가 비어있음");
+            //Debug.Log("큐가 비어있음");
             return;
         }
 
@@ -104,7 +104,7 @@ public class ObstacleManager : MonoBehaviour
         objToSpawn.transform.position = new Vector2(x, y); // 위치 설정
         objToSpawn.SetActive(true);                        // 활성화
         activeObstacles.Add(objToSpawn);                   // 리스트에 추가
-        Debug.Log($"장애물 생성 : {objToSpawn.name} 오브젝트가 {objToSpawn.transform.position} 위치에 생성");
+        //Debug.Log($"장애물 생성 : {objToSpawn.name} 오브젝트가 {objToSpawn.transform.position} 위치에 생성");
 
         // ParallaxObject 등록
         ParallaxObject po = objToSpawn.GetComponent<ParallaxObject>();
@@ -124,7 +124,7 @@ public class ObstacleManager : MonoBehaviour
         for (int i = activeObstacles.Count - 1; i >= 0; i--)
         {
             GameObject obj = activeObstacles[i];
-            Debug.Log($"활성화된 오브젝트 : {obj.name} / {obj.transform.position.x}");
+            //Debug.Log($"활성화된 오브젝트 : {obj.name} / {obj.transform.position.x}");
 
             // 왼쪽 화면 바깥으로 벗어난 경우 처리
             if (obj.transform.position.x < cameraLeft)

@@ -1,18 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class PlayerView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] PlayerModel model;
+
+    [SerializeField] TMP_Text currentText;
+    [SerializeField] TMP_Text highScoreText;
+    [SerializeField] TMP_Text gameOverText;
+
+    private void Start()
     {
-        
+        UpdateBestCoinUI();
+        gameOverText.gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        currentText.text = $"Coin : {model.CoinCount}";
     }
+
+    public void OnClickLobbyButton()
+    {
+        SceneManager.LoadScene("LobbyScene");
+    }
+
+    public void UpdateBestCoinUI()
+    {
+        int bestCoin = GameDataManager.Instance.GetBestCoin();
+        highScoreText.text = $"Best : {bestCoin}";
+    }
+
+    public void OnGameEnd()
+    {
+        GameDataManager.Instance.TryUpdateBestCoin(model.CoinCount);
+        UpdateBestCoinUI();
+        gameOverText.gameObject.SetActive(true);
+    }
+
 }
