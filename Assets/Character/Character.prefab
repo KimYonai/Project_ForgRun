@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
-  jumpForce: 5
+  jumpForce: 7
   coinCount: 0
 --- !u!114 &4153138650986587388
 MonoBehaviour:
@@ -189,6 +189,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2279c0c38dfaf0e4f87fa93ec66af7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 0}
+  currentText: {fileID: 0}
+  highScoreText: {fileID: 0}
+  gameOverText: {fileID: 0}
 --- !u!114 &1462107586493151584
 MonoBehaviour:
   m_ObjectHideFlags: 0
