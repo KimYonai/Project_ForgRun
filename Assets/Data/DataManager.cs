@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.IO;
 
-public class GameDataManager : MonoBehaviour
+public class DataManager : MonoBehaviour
 {
-    public static GameDataManager Instance;
+    public static DataManager Instance;
 
     private string savePath;
     public GameData data;

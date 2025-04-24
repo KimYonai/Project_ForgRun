@@ -31,13 +31,13 @@ public class PlayerView : MonoBehaviour
 
     public void UpdateBestCoinUI()
     {
-        int bestCoin = GameDataManager.Instance.GetBestCoin();
+        int bestCoin = DataManager.Instance.GetBestCoin();
         highScoreText.text = $"Best : {bestCoin}";
     }
 
     public void OnGameEnd()
     {
-        GameDataManager.Instance.TryUpdateBestCoin(model.CoinCount);
+        DataManager.Instance.TryUpdateBestCoin(model.CoinCount);
         UpdateBestCoinUI();
         gameOverText.gameObject.SetActive(true);
     }
