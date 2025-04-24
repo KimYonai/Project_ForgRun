@@ -3,6 +3,19 @@ using UnityEngine;
 public class ItemStack : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private Item itemData; // 스크립터블 오브젝트 참조
+
+    private void Awake()
+    {
+        if (itemData != null)
+        {
+            gameObject.name = itemData.name; // 게임 오브젝트 이름 설정
+        }
+        else
+        {
+            Debug.LogWarning($"Item data not assigned on {gameObject.name}");
+        }
+    }
 
     private void Update()
     {
